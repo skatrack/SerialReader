@@ -55,6 +55,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CircularBuffer.cs" />
+    <Compile Include="ComPort.cs" />
+    <Compile Include="SerialReaderModel.cs" />
+    <Compile Include="SerialReaderViewModel.cs" />
+    <Compile Include="UiCommand.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

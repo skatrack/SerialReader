@@ -5,8 +5,80 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SerialReader"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="SerialReader" Height="800" Width="1200">
+
+    <Window.Resources>
+        <local:SerialReaderViewModel x:Key="SerialReaderVM"/>
+    </Window.Resources>
+
+    <Grid Width="Auto" Height="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="4*" />
+        </Grid.RowDefinitions>
+
+        <!--ROW 0-->
+        <GroupBox Header="COM port" Name ="COM_GroupBox"  Grid.Row="0">
+            <Grid Width="Auto" Height="Auto">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" MinWidth="50"/>
+                    <ColumnDefinition Width="*" MinWidth="50"/>
+                </Grid.ColumnDefinitions>
+
+                <ComboBox x:Name="ComboBox_PortList" Grid.Column="0" Grid.Row="0"  ItemsSource="{Binding PortListVM, Source={StaticResource SerialReaderVM}}"
+                                    SelectedItem="{Binding SelectedPortVM, Source={StaticResource SerialReaderVM}, Mode=TwoWay}"
+                                    IsEnabled="{Binding ElementsEnabled, Source={StaticResource SerialReaderVM}}"/>
+                <Button Name="Button_Connect" Grid.Column="1" Grid.Row="0" 
+                                Command="{Binding ConnectButton_Click, Source={StaticResource SerialReaderVM}}"
+                                Content="{Binding ConnectionStateVM, Mode=OneWay, Source={StaticResource SerialReaderVM}}">
+                </Button>
+            </Grid>
+        </GroupBox>
+
+        <!--ROW 1 -->
+        <GroupBox Header="Data" Name ="Data_GroupBox" Grid.Row="1" Grid.ColumnSpan="2">
+
+            <Grid Width="Auto" Height="Auto">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" MinWidth="50"/>
+                    <ColumnDefinition Width="*" MinWidth="50"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+            
+
+                <Label Grid.Column="0" Grid.Row="0" Content="Gyroscope X" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                <TextBox Name="GyroscopeX_TextBox" Grid.Column="1" Grid.Row="0" VerticalContentAlignment="Center" TextAlignment="Center"  Text="{Binding GyroXVM, Source={StaticResource SerialReaderVM}, UpdateSourceTrigger=Explicit, Mode=OneWay}"/>
+                <Label Grid.Column="0" Grid.Row="1" Content="Gyroscope Y" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                <TextBox Name="GyroscopeY_TextBox" Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" TextAlignment="Center"  Text="{Binding GyroYVM, Source={StaticResource SerialReaderVM}, UpdateSourceTrigger=Explicit, Mode=OneWay}"/>
+                <Label Grid.Column="0" Grid.Row="2" Content="Gyroscope Z" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                <TextBox Name="GyroscopeZ_TextBox" Grid.Column="1" Grid.Row="2" VerticalContentAlignment="Center" TextAlignment="Center"  Text="{Binding GyroZVM, Source={StaticResource SerialReaderVM}, UpdateSourceTrigger=Explicit, Mode=OneWay}"/>
+                <Label Grid.Column="0" Grid.Row="3" Content="Accelerometer X" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                <TextBox Name="AccelerometerX_TextBox" Grid.Column="1" Grid.Row="3" VerticalContentAlignment="Center" TextAlignment="Center"  Text="{Binding AccelXVM, Source={StaticResource SerialReaderVM}, UpdateSourceTrigger=Explicit, Mode=OneWay}"/>
+                <Label Grid.Column="0" Grid.Row="4" Content="Accelerometer Y" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                <TextBox Name="AccelerometerY_TextBox" Grid.Column="1" Grid.Row="4" VerticalContentAlignment="Center" TextAlignment="Center"  Text="{Binding AccelYVM, Source={StaticResource SerialReaderVM}, UpdateSourceTrigger=Explicit, Mode=OneWay}"/>
+                <Label Grid.Column="0" Grid.Row="5" Content="Accelerometer Z" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                <TextBox Name="AccelerometerZ_TextBox" Grid.Column="1" Grid.Row="5" VerticalContentAlignment="Center" TextAlignment="Center"  Text="{Binding AccelZVM, Source={StaticResource SerialReaderVM}, UpdateSourceTrigger=Explicit, Mode=OneWay}"/>
+                <Label Grid.Column="0" Grid.Row="6" Content="Timestamp" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                <TextBox Name="Timestamp_TextBox" Grid.Column="1" Grid.Row="6" VerticalContentAlignment="Center" TextAlignment="Center"  Text="{Binding TimestampVM, Source={StaticResource SerialReaderVM}, UpdateSourceTrigger=Explicit, Mode=OneWay}"/>  
+            </Grid>
+        </GroupBox>
         
+        <!--ROW 2-->
+        <GroupBox Header="Log" Name ="Log_GroupBox" Grid.Row="2">
+            <ScrollViewer Name="ActivityLogScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <TextBox Name="ActivityLogging_TextBox" TextChanged="ActivityLogTextChangedHandler" IsEnabled="True"  
+                Text="{Binding ActivityLogVM, Mode=OneWay, Source={StaticResource SerialReaderVM}}"/>
+            </ScrollViewer>
+        </GroupBox>
     </Grid>
 </Window>
