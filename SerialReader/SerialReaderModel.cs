@@ -14,6 +14,8 @@ namespace SerialReader
         #region Fields
 
         private Dispatcher dispatcher = Dispatcher.CurrentDispatcher;
+        DispatcherTimer timer;
+        private byte[] serialBuffer;
 
         public float[] gyro { get; private set; }
         public float[] accel { get; private set; }
@@ -53,45 +55,58 @@ namespace SerialReader
 
             comPort = new ComPort();
 
-            Task.Run(() =>
-            {
-                while(true)
-                {
-                    DataParser();
-                    Thread.Sleep(10);
-                }
-            });
+            //Configure and start timer
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(100);
+            timer.Tick += DataParser;
+            timer.Start();
+
+            //Task.Run(() =>
+            //{
+            //    while(true)
+            //    {
+            //        DataParser(null, null);
+            //    }
+            //});
         }
 
-        void DataParser ()
+        void DataParser(object sender, EventArgs e)
         {
-            byte[] buffer;
 
             if (comPort.connectionState && comPort.circularBuffer.Length > 36)
             {
-                buffer = comPort.circularBuffer.Dequeue(comPort.circularBuffer.Length);
+                serialBuffer = comPort.circularBuffer.Dequeue(comPort.circularBuffer.Length);
 
-                for (int i=1; i<buffer.Length; i++)
+                for (int i=1; i< serialBuffer.Length; i++)
                 {
-                    if (buffer[i] == 0x55 && buffer[i-1] == 0x55 && i >= 33)
+                    if (serialBuffer[i] == 0x55 && serialBuffer[i-1] == 0x55 && i >= 33)
                     {
-                        gyro[0] = BitConverter.ToSingle(buffer, i - 29);
-                        gyro[1] = BitConverter.ToSingle(buffer, i - 25);
-                        gyro[2] = BitConverter.ToSingle(buffer, i - 21);
+                        gyro[0] = BitConverter.ToSingle(serialBuffer, i - 29);
+                        gyro[1] = BitConverter.ToSingle(serialBuffer, i - 25);
+                        gyro[2] = BitConverter.ToSingle(serialBuffer, i - 21);
 
-                        accel[0] = BitConverter.ToSingle(buffer, i - 17);
-                        accel[1] = BitConverter.ToSingle(buffer, i - 13);
-                        accel[2] = BitConverter.ToSingle(buffer, i - 9);
+                        accel[0] = BitConverter.ToSingle(serialBuffer, i - 17);
+                        accel[1] = BitConverter.ToSingle(serialBuffer, i - 13);
+                        accel[2] = BitConverter.ToSingle(serialBuffer, i - 9);
 
-                        timestamp = BitConverter.ToSingle(buffer, i - 5);
+                        timestamp = BitConverter.ToSingle(serialBuffer, i - 5);
 
-                        dispatcher.Invoke(() => gyroCollection[0].Add(new KeyValuePair<float, float>(timestamp, gyro[0])));
-                        dispatcher.Invoke(() => gyroCollection[1].Add(new KeyValuePair<float, float>(timestamp, gyro[1])));
-                        dispatcher.Invoke(() => gyroCollection[2].Add(new KeyValuePair<float, float>(timestamp, gyro[2])));
+                        //dispatcher.Invoke(() => gyroCollection[0].Add(new KeyValuePair<float, float>(timestamp, gyro[0])));
+                        //dispatcher.Invoke(() => gyroCollection[1].Add(new KeyValuePair<float, float>(timestamp, gyro[1])));
+                        //dispatcher.Invoke(() => gyroCollection[2].Add(new KeyValuePair<float, float>(timestamp, gyro[2])));
 
-                        dispatcher.Invoke(() => accelCollection[0].Add(new KeyValuePair<float, float>(timestamp, accel[0])));
-                        dispatcher.Invoke(() => accelCollection[1].Add(new KeyValuePair<float, float>(timestamp, accel[1])));
-                        dispatcher.Invoke(() => accelCollection[2].Add(new KeyValuePair<float, float>(timestamp, accel[2])));
+                        //dispatcher.Invoke(() => accelCollection[0].Add(new KeyValuePair<float, float>(timestamp, accel[0])));
+                        //dispatcher.Invoke(() => accelCollection[1].Add(new KeyValuePair<float, float>(timestamp, accel[1])));
+                        //dispatcher.Invoke(() => accelCollection[2].Add(new KeyValuePair<float, float>(timestamp, accel[2])));
+
+
+                        gyroCollection[0].Add(new KeyValuePair<float, float>(timestamp, gyro[0]));
+                        gyroCollection[1].Add(new KeyValuePair<float, float>(timestamp, gyro[1]));
+                        gyroCollection[2].Add(new KeyValuePair<float, float>(timestamp, gyro[2]));
+
+                        accelCollection[0].Add(new KeyValuePair<float, float>(timestamp, accel[0]));
+                        accelCollection[1].Add(new KeyValuePair<float, float>(timestamp, accel[1]));
+                        accelCollection[2].Add(new KeyValuePair<float, float>(timestamp, accel[2]));
                     }
                 }
             }

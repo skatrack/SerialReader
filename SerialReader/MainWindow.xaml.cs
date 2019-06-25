@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.DataVisualization.Charting;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -53,6 +54,19 @@ namespace SerialReader
             catch
             {
                 //nothin to do
+            }
+        }
+
+        public void Button_Clear_Click(object sender, EventArgs e)
+        {
+            foreach (var series in gyroChart.Series.OfType<Series>())
+            {
+                series.DataContext = null;
+            }
+
+            foreach (var series in accelChart.Series.OfType<Series>())
+            {
+                series.DataContext = null;
             }
         }
 

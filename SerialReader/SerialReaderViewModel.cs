@@ -100,6 +100,10 @@ namespace SerialReader
             {
                 return serialReaderModel.gyroCollection[0];
             }
+            set
+            {
+                serialReaderModel.gyroCollection[0] = value;
+            }
         }
 
         public ObservableCollection<KeyValuePair<float, float>> GyroYVM
@@ -107,6 +111,10 @@ namespace SerialReader
             get
             {
                 return serialReaderModel.gyroCollection[1];
+            }
+            set
+            {
+                serialReaderModel.gyroCollection[1] = value;
             }
         }
 
@@ -116,6 +124,10 @@ namespace SerialReader
             {
                 return serialReaderModel.gyroCollection[2];
             }
+            set
+            {
+                serialReaderModel.gyroCollection[2] = value;
+            }
         }
 
         public ObservableCollection<KeyValuePair<float, float>> AccelXVM
@@ -123,6 +135,10 @@ namespace SerialReader
             get
             {
                 return serialReaderModel.accelCollection[0];
+            }
+            set
+            {
+                serialReaderModel.accelCollection[0] = value;
             }
         }
 
@@ -132,6 +148,10 @@ namespace SerialReader
             {
                 return serialReaderModel.accelCollection[1];
             }
+            set
+            {
+                serialReaderModel.accelCollection[1] = value;
+            }
         }
 
         public ObservableCollection<KeyValuePair<float, float>> AccelZVM
@@ -139,6 +159,10 @@ namespace SerialReader
             get
             {
                 return serialReaderModel.accelCollection[2];
+            }
+            set
+            {
+                serialReaderModel.accelCollection[2] = value;
             }
         }
 
@@ -221,7 +245,7 @@ namespace SerialReader
                 serialReaderModel.gyroCollection[i].Clear();
 
             for (int i = 0; i < serialReaderModel.accelCollection.Length; i++)
-                serialReaderModel.accelCollection[i].Clear();
+                serialReaderModel.accelCollection[i].Clear(); 
         }
 
         #endregion

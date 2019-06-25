@@ -38,6 +38,7 @@
                 </Button>
                 <Button Name="Button_Clear" Grid.Column="2" Grid.Row="0" 
                                 Command="{Binding ClearButton_Click, Source={StaticResource SerialReaderVM}}"
+                                Click="Button_Clear_Click"
                                 Content="Clear Chart">
                 </Button>
             </Grid>
@@ -53,7 +54,7 @@
                 </Grid.RowDefinitions>
 
 
-                <DVC:Chart Title="Gyroscope"  Grid.Row="0">
+                <DVC:Chart Name="gyroChart" Title="Gyroscope"  Grid.Row="0">
 
                     <DVC:Chart.Axes>
                         <DVC:LinearAxis Orientation="X"></DVC:LinearAxis>
@@ -106,7 +107,7 @@
                     </DVC:Chart.Series>
                 </DVC:Chart>
 
-                <DVC:Chart Title="Accelerometer" Grid.Row="1">
+                <DVC:Chart Name="accelChart"  Title="Accelerometer" Grid.Row="1">
 
                     <DVC:Chart.Axes>
                         <DVC:LinearAxis Orientation="X"></DVC:LinearAxis>
