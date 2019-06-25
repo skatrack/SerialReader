@@ -12,8 +12,14 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
+
+
 namespace SerialReader
 {
+
+    using OxyPlot;
+    using OxyPlot.Series;
+
     class SerialReaderViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

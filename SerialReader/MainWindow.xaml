@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:DV="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         xmlns:DVC="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SerialReader"
@@ -53,114 +54,92 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
+                <oxy:Plot Grid.Row="0" x:Name="gyroPlot"
+                          Title="Gyroscope">
 
-                <DVC:Chart Name="gyroChart" Title="Gyroscope"  Grid.Row="0">
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Title="Timestamp, s" 
+                                Position="Bottom" 
+                                MajorGridlineStyle="Solid" 
+                                MinorGridlineStyle="Solid" 
+                                MinimumPadding="0" 
+                                MaximumPadding="0"/>
+                        <oxy:LinearAxis Title="Angular speed, deg/s" 
+                                Position="Left" 
+                                MajorGridlineStyle="Solid" 
+                                MinorGridlineStyle="Solid" 
+                                FontSize="12" 
+                                TicklineColor="#FF190000" 
+                                TickStyle="Outside" />
+                    </oxy:Plot.Axes>
 
-                    <DVC:Chart.Axes>
-                        <DVC:LinearAxis Orientation="X"></DVC:LinearAxis>
-                        <DVC:LinearAxis Orientation="Y"></DVC:LinearAxis>
-                    </DVC:Chart.Axes>
+                    <oxy:Plot.Series>
+                        <oxy:LineSeries
+                            ItemsSource="{Binding GyroXVM, Mode=OneWay, Source={StaticResource SerialReaderVM}}"
+                            DataFieldX="Key"
+                            DataFieldY="Value"
+                            MarkerSize="3"
+                            MarkerType="Plus"/>
+                        <oxy:LineSeries
+                            ItemsSource="{Binding GyroYVM, Mode=OneWay, Source={StaticResource SerialReaderVM}}"
+                            DataFieldX="Key"
+                            DataFieldY="Value"
+                            MarkerSize="3"
+                            MarkerType="Plus"/>
+                        <oxy:LineSeries
+                            ItemsSource="{Binding GyroZVM, Mode=OneWay, Source={StaticResource SerialReaderVM}}"
+                            DataFieldX="Key"
+                            DataFieldY="Value"
+                            MarkerSize="3"
+                            MarkerType="Plus"/>
 
-                    <DVC:Chart.Series>
-                        <DVC:LineSeries Title="X"
-                                    ItemsSource="{Binding GyroXVM, Source={StaticResource SerialReaderVM}}"
-                                    IndependentValueBinding="{Binding Key}"
-                                    DependentValueBinding="{Binding Value}">
+                    </oxy:Plot.Series>
+                    
+                </oxy:Plot>
 
-                            <DVC:LineSeries.DataPointStyle>
-                                <Style TargetType="{x:Type DVC:LineDataPoint}">
-                                    <Setter Property="Width" Value="0"/>
-                                    <Setter Property="Height" Value="0"/>
-                                    <Setter Property="Background" Value="Blue" />
-                                </Style>
-                            </DVC:LineSeries.DataPointStyle>
+                <oxy:Plot Grid.Row="1" x:Name="accelPlot"
+                          Title="Accelerometer">
 
-                        </DVC:LineSeries>
-                        <DVC:LineSeries Title="Y"
-                                    ItemsSource="{Binding GyroYVM, Source={StaticResource SerialReaderVM}}"
-                                    IndependentValueBinding="{Binding Key}"
-                                    DependentValueBinding="{Binding Value}">
-                            
-                            <DVC:LineSeries.DataPointStyle>
-                                <Style TargetType="{x:Type DVC:LineDataPoint}">
-                                    <Setter Property="Width" Value="0"/>
-                                    <Setter Property="Height" Value="0"/>
-                                    <Setter Property="Background" Value="Green" />
-                                </Style>
-                            </DVC:LineSeries.DataPointStyle>
-                        </DVC:LineSeries>
-                        
-                        <DVC:LineSeries Title="Z"
-                                    ItemsSource="{Binding GyroZVM, Source={StaticResource SerialReaderVM}}"
-                                    IndependentValueBinding="{Binding Key}"
-                                    DependentValueBinding="{Binding Value}">
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Title="Timestamp, s" 
+                                Position="Bottom" 
+                                MajorGridlineStyle="Solid" 
+                                MinorGridlineStyle="Solid" 
+                                MinimumPadding="0" 
+                                MaximumPadding="0"/>
+                        <oxy:LinearAxis Title="G factor, m/s^2" 
+                                Position="Left" 
+                                MajorGridlineStyle="Solid" 
+                                MinorGridlineStyle="Solid" 
+                                FontSize="12" 
+                                TicklineColor="#FF190000" 
+                                TickStyle="Outside" />
+                    </oxy:Plot.Axes>
 
-                            <DVC:LineSeries.DataPointStyle>
-                                <Style TargetType="{x:Type DVC:LineDataPoint}">
-                                    <Setter Property="Width" Value="0"/>
-                                    <Setter Property="Height" Value="0"/>
-                                    <Setter Property="Background" Value="Red" />
-                                </Style>
-                            </DVC:LineSeries.DataPointStyle>
-                        </DVC:LineSeries>
-                        
-                    </DVC:Chart.Series>
-                </DVC:Chart>
+                    <oxy:Plot.Series>
+                        <oxy:LineSeries
+                            ItemsSource="{Binding AccelXVM, Mode=OneWay, Source={StaticResource SerialReaderVM}}"
+                            DataFieldX="Key"
+                            DataFieldY="Value"
+                            MarkerSize="3"
+                            MarkerType="Plus"/>
+                        <oxy:LineSeries
+                            ItemsSource="{Binding AccelYVM, Mode=OneWay, Source={StaticResource SerialReaderVM}}"
+                            DataFieldX="Key"
+                            DataFieldY="Value"
+                            MarkerSize="3"
+                            MarkerType="Plus"/>
+                        <oxy:LineSeries
+                            ItemsSource="{Binding AccelZVM, Mode=OneWay, Source={StaticResource SerialReaderVM}}"
+                            DataFieldX="Key"
+                            DataFieldY="Value"
+                            MarkerSize="3"
+                            MarkerType="Plus"/>
 
-                <DVC:Chart Name="accelChart"  Title="Accelerometer" Grid.Row="1">
+                    </oxy:Plot.Series>
 
-                    <DVC:Chart.Axes>
-                        <DVC:LinearAxis Orientation="X"></DVC:LinearAxis>
-                        <DVC:LinearAxis Orientation="Y"></DVC:LinearAxis>
-                    </DVC:Chart.Axes>
+                </oxy:Plot>
 
-                    <DVC:Chart.Series>
-                        <DVC:LineSeries Title="X"
-                                    ItemsSource="{Binding AccelXVM, Source={StaticResource SerialReaderVM}}"
-                                    IndependentValueBinding="{Binding Key}"
-                                    DependentValueBinding="{Binding Value}">
-
-                            <DVC:LineSeries.DataPointStyle>
-                                <Style TargetType="{x:Type DVC:LineDataPoint}">
-                                    <Setter Property="Width" Value="0"/>
-                                    <Setter Property="Height" Value="0"/>
-                                    <Setter Property="Background" Value="Blue" />
-                                </Style>
-                            </DVC:LineSeries.DataPointStyle>
-
-                        </DVC:LineSeries>
-                        
-                        <DVC:LineSeries Title="Y"
-                                    ItemsSource="{Binding AccelYVM, Source={StaticResource SerialReaderVM}}"
-                                    IndependentValueBinding="{Binding Key}"
-                                    DependentValueBinding="{Binding Value}">
-
-                            <DVC:LineSeries.DataPointStyle>
-                                <Style TargetType="{x:Type DVC:LineDataPoint}">
-                                    <Setter Property="Width" Value="0"/>
-                                    <Setter Property="Height" Value="0"/>
-                                    <Setter Property="Background" Value="Green" />
-                                </Style>
-                            </DVC:LineSeries.DataPointStyle>
-
-                        </DVC:LineSeries>
-                        
-                        <DVC:LineSeries Title="Z"
-                                    ItemsSource="{Binding AccelZVM, Source={StaticResource SerialReaderVM}}"
-                                    IndependentValueBinding="{Binding Key}"
-                                    DependentValueBinding="{Binding Value}">
-
-                            <DVC:LineSeries.DataPointStyle>
-                                <Style TargetType="{x:Type DVC:LineDataPoint}">
-                                    <Setter Property="Width" Value="0"/>
-                                    <Setter Property="Height" Value="0"/>
-                                    <Setter Property="Background" Value="Red" />
-                                </Style>
-                            </DVC:LineSeries.DataPointStyle>
-
-                        </DVC:LineSeries>
-                    </DVC:Chart.Series>
-                </DVC:Chart>
             </Grid>
 
 

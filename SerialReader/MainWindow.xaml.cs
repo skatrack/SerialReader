@@ -59,15 +59,15 @@ namespace SerialReader
 
         public void Button_Clear_Click(object sender, EventArgs e)
         {
-            foreach (var series in gyroChart.Series.OfType<Series>())
-            {
-                series.DataContext = null;
-            }
+            //foreach (var series in gyroChart.Series.OfType<Series>())
+            //{
+            //    series.DataContext = null;
+            //}
 
-            foreach (var series in accelChart.Series.OfType<Series>())
-            {
-                series.DataContext = null;
-            }
+            //foreach (var series in accelChart.Series.OfType<Series>())
+            //{
+            //    series.DataContext = null;
+            //}
         }
 
         ////Scroll to bottom when text is changed
