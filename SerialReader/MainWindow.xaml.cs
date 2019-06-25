@@ -56,10 +56,10 @@ namespace SerialReader
             }
         }
 
-        //Scroll to bottom when text is changed
-        public void ActivityLogTextChangedHandler(object sender, EventArgs e)
-        {
-            ActivityLogScrollViewer.ScrollToBottom();
-        }
+        ////Scroll to bottom when text is changed
+        //public void ActivityLogTextChangedHandler(object sender, EventArgs e)
+        //{
+        //    ActivityLogScrollViewer.ScrollToBottom();
+        //}
     }
 }

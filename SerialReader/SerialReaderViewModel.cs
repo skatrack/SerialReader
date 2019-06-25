@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
@@ -21,6 +22,7 @@ namespace SerialReader
         DispatcherTimer timer;
 
         private ICommand ConnectCommand;
+        private ICommand ClearCommand;
         private string selectedPort;
 
         #region Commands
@@ -34,6 +36,19 @@ namespace SerialReader
                     ConnectCommand = new UiCommand((obj) => this.ConnectRequest(obj));
                 }
                 return ConnectCommand;
+            }
+
+        }
+
+        public ICommand ClearButton_Click
+        {
+            get
+            {
+                if (ClearCommand == null)
+                {
+                    ClearCommand = new UiCommand((obj) => this.ClearRequest(obj));
+                }
+                return ClearCommand;
             }
 
         }
@@ -79,61 +94,61 @@ namespace SerialReader
             }
         }
 
-        public string GyroXVM
+        public ObservableCollection<KeyValuePair<float,float>> GyroXVM
         {
             get
             {
-                return serialReaderModel.gyro[0].ToString();
+                return serialReaderModel.gyroCollection[0];
             }
         }
 
-        public string GyroYVM
+        public ObservableCollection<KeyValuePair<float, float>> GyroYVM
         {
             get
             {
-                return serialReaderModel.gyro[1].ToString();
+                return serialReaderModel.gyroCollection[1];
             }
         }
 
-        public string GyroZVM
+        public ObservableCollection<KeyValuePair<float, float>> GyroZVM
         {
             get
             {
-                return serialReaderModel.gyro[2].ToString();
+                return serialReaderModel.gyroCollection[2];
             }
         }
 
-        public string AccelXVM
+        public ObservableCollection<KeyValuePair<float, float>> AccelXVM
         {
             get
             {
-                return serialReaderModel.accel[0].ToString();
+                return serialReaderModel.accelCollection[0];
             }
         }
 
-        public string AccelYVM
+        public ObservableCollection<KeyValuePair<float, float>> AccelYVM
         {
             get
             {
-                return serialReaderModel.accel[1].ToString();
+                return serialReaderModel.accelCollection[1];
             }
         }
 
-        public string AccelZVM
+        public ObservableCollection<KeyValuePair<float, float>> AccelZVM
         {
             get
             {
-                return serialReaderModel.accel[2].ToString();
+                return serialReaderModel.accelCollection[2];
             }
         }
 
-        public string TimestampVM
-        {
-            get
-            {
-                return serialReaderModel.timestamp.ToString();
-            }
-        }
+        //public float TimestampVM
+        //{
+        //    get
+        //    {
+        //        return serialReaderModel.timestamp;
+        //    }
+        //}
         #endregion
 
         #region Contructor
@@ -198,6 +213,15 @@ namespace SerialReader
         {
             serialReaderModel.comPort.SetConnectionState(selectedPort, !serialReaderModel.comPort.connectionState);
             PropertyChanged(this, new PropertyChangedEventArgs("ConnectionStateVM"));
+        }
+
+        public void ClearRequest(object parameter)
+        {
+            for (int i=0; i<serialReaderModel.gyroCollection.Length;i++)
+                serialReaderModel.gyroCollection[i].Clear();
+
+            for (int i = 0; i < serialReaderModel.accelCollection.Length; i++)
+                serialReaderModel.accelCollection[i].Clear();
         }
 
         #endregion
